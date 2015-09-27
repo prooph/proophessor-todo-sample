@@ -1,0 +1,38 @@
+nginx:
+  build: docker/development/nginx
+  ports:
+      - 8080:80
+      - 10081:10081
+      - 10082:10082
+  links:
+    - php:php
+  volumes_from:
+    - datanginx
+    - dataphp
+
+datanginx:
+  image: debian:jessie
+  volumes:
+    - ./docker/development/nginx/config:/etc/nginx
+
+php:
+  build: docker/development/php
+  links:
+    - mariadb:mariadb
+  volumes_from:
+    - dataphp
+
+dataphp:
+  image: debian:jessie
+  volumes:
+    - .:/var/www/proophessor-do
+
+mariadb:
+  image: mariadb
+  ports:
+    - 3306:3306
+  environment:
+    - MYSQL_ROOT_PASSWORD=dev
+    - MYSQL_USER=dev
+    - MYSQL_PASSWORD=dev
+    - MYSQL_DATABASE=proophessor
