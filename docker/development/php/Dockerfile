@@ -46,3 +46,13 @@ RUN ln -fs /opt/zray/lib/zray.so /usr/local/lib/php/extensions/no-debug-non-zts-
 
 # Copy custom configuration
 COPY config/xdebug.ini /usr/local/etc/php/conf.d/
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+
+RUN mkdir -p /var/www/proophessor-do
+
+WORKDIR /var/www/proophessor-do
+
+COPY docker-entrypoint.sh /
+
+ENTRYPOINT ["/docker-entrypoint.sh"]

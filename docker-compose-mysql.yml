@@ -21,6 +21,8 @@ php:
     - mariadb:mariadb
   volumes_from:
     - dataphp
+  environment:
+    - ADAPTER=mysql
 
 dataphp:
   image: debian:jessie
