@@ -88,9 +88,8 @@ final class API
     private function getPayloadFromRequest(RequestInterface $request)
     {
         $contentType = $request->getHeader('Content-Type');
-        $expected    = 'application/json; charset=UTF-8';
 
-        if (empty($contentType) || $expected != $contentType[0]) {
+        if (empty($contentType) || false !== strpos($contentType[0], 'json')) {
             throw new \Exception('Expected Content-Type: ' . $expected);
         }
 
