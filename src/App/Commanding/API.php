@@ -82,18 +82,9 @@ final class API
      *
      * @param RequestInterface $request
      * @return array
-     *
-     * @throws \Exception
      */
     private function getPayloadFromRequest(RequestInterface $request)
     {
-        $contentType = $request->getHeader('Content-Type');
-        $expected    = 'application/json; charset=UTF-8';
-
-        if (empty($contentType) || $expected != $contentType[0]) {
-            throw new \Exception('Expected Content-Type: ' . $expected);
-        }
-
         $payload = json_decode($request->getBody(), true);
 
         switch (json_last_error()) {
