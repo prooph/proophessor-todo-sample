@@ -30,11 +30,17 @@ final class TodoProjector
     private $connection;
 
     /**
+     * @var TodoFinder
+     */
+    private $todoFinder;
+
+    /**
      * @param Connection $connection
      */
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, TodoFinder $todoFinder)
     {
         $this->connection = $connection;
+        $this->todoFinder = $todoFinder;
     }
 
     /**
@@ -42,12 +48,29 @@ final class TodoProjector
      */
     public function onTodoWasPosted(TodoWasPosted $event)
     {
-        $this->connection->insert(Table::TODO, [
-            'id' => $event->todoId()->toString(),
-            'assignee_id' => $event->assigneeId()->toString(),
-            'text' => $event->text(),
-            'status' => $event->todoStatus()->toString()
-        ]);
+        $user = $this->todoFinder->findById($event->todoId()->toString());
+
+        if (!$user) {
+            $this->connection->insert(
+                Table::TODO,
+                [
+                    'id'          => $event->todoId()->toString(),
+                    'assignee_id' => $event->assigneeId()->toString(),
+                    'text'        => $event->text(),
+                    'status'      => $event->todoStatus()->toString()
+                ]);
+        } else {
+            $this->connection->update(
+                Table::TODO,
+                [
+                    'assignee_id' => $event->assigneeId()->toString(),
+                    'text'        => $event->text(),
+                    'status'      => $event->todoStatus()->toString()
+                ],
+                [
+                    'id' => $event->todoId()->toString(),
+                ]);
+        }
     }
 
     /**

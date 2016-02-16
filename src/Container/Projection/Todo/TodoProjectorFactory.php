@@ -11,6 +11,7 @@
 namespace Prooph\ProophessorDo\Container\Projection\Todo;
 
 use Interop\Container\ContainerInterface;
+use Prooph\ProophessorDo\Projection\Todo\TodoFinder;
 use Prooph\ProophessorDo\Projection\Todo\TodoProjector;
 
 /**
@@ -27,6 +28,9 @@ final class TodoProjectorFactory
      */
     public function __invoke(ContainerInterface $container)
     {
-        return new TodoProjector($container->get('doctrine.connection.default'));
+        return new TodoProjector(
+            $container->get('doctrine.connection.default'),
+            $container->get(TodoFinder::class)
+        );
     }
 }

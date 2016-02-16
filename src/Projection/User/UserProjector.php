@@ -49,11 +49,28 @@ final class UserProjector
      */
     public function onUserWasRegistered(UserWasRegistered $event)
     {
-        $this->connection->insert(Table::USER, [
-            'id' => $event->userId()->toString(),
-            'name' => $event->name(),
-            'email' => $event->emailAddress()->toString()
-        ]);
+        $user = $this->userFinder->findById($event->userId()->toString());
+
+        if (!$user) {
+            $this->connection->insert(
+                Table::USER,
+                [
+                    'id'    => $event->userId()->toString(),
+                    'name'  => $event->name(),
+                    'email' => $event->emailAddress()->toString()
+                ]
+            );
+        } else {
+            $this->connection->update(
+                Table::USER,
+                [
+                    'name'  => $event->name(),
+                    'email' => $event->emailAddress()->toString()
+                ],
+                [
+                    'id' => $event->userId()->toString(),
+                ]);
+        }
     }
 
     /**
