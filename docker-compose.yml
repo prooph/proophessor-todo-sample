@@ -11,7 +11,7 @@ nginx:
     - dataphp
 
 php:
-  image: prooph/php:5.6-fpm-xdebug
+  image: prooph/php:7.0-fpm
   links:
     - mariadb:mariadb
   volumes_from:
