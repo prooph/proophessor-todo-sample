@@ -40,4 +40,13 @@ final class InvalidReminder extends \Exception
             $reminder->createdOn()
         ));
     }
+    /**
+     * @return InvalidReminder
+     */
+    public static function alreadyReminded()
+    {
+        return new self(sprintf(
+            'The assignee was already reminded.'
+        ));
+    }
 }
