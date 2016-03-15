@@ -34,12 +34,15 @@ return [
             \Prooph\ProophessorDo\Model\Todo\Handler\ReopenTodoHandler::class     => \Prooph\ProophessorDo\Container\Model\Todo\ReopenTodoHandlerFactory::class,
             \Prooph\ProophessorDo\Model\Todo\Handler\AddDeadlineToTodoHandler::class => \Prooph\ProophessorDo\Container\Model\Todo\AddDeadlineToTodoHandlerFactory::class,
             \Prooph\ProophessorDo\Model\Todo\Handler\AddReminderToTodoHandler::class => \Prooph\ProophessorDo\Container\Model\Todo\AddReminderToTodoHandlerFactory::class,
+            \Prooph\ProophessorDo\Model\Todo\Handler\RemindTodoAssigneeHandler::class => \Prooph\ProophessorDo\Container\Model\Todo\RemindTodoAssigneeHandlerFactory::class,
             \Prooph\ProophessorDo\Model\Todo\TodoList::class            => \Prooph\ProophessorDo\Container\Infrastructure\Repository\EventStoreTodoListFactory::class,
             // Projections
             \Prooph\ProophessorDo\Projection\User\UserProjector::class => \Prooph\ProophessorDo\Container\Projection\User\UserProjectorFactory::class,
             \Prooph\ProophessorDo\Projection\User\UserFinder::class    => \Prooph\ProophessorDo\Container\Projection\User\UserFinderFactory::class,
             \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class => \Prooph\ProophessorDo\Container\Projection\Todo\TodoProjectorFactory::class,
             \Prooph\ProophessorDo\Projection\Todo\TodoFinder::class    => \Prooph\ProophessorDo\Container\Projection\Todo\TodoFinderFactory::class,
+            // Subscriber
+            \Prooph\ProophessorDo\App\Mail\SendTodoReminderMailSubscriber::class => \Prooph\ProophessorDo\Container\App\Mail\SendTodoReminderMailSubscriberFactory::class,
         ],
     ],
 ];

@@ -53,6 +53,7 @@ return [
                         \Prooph\ProophessorDo\Model\Todo\Command\ReopenTodo::class => \Prooph\ProophessorDo\Model\Todo\Handler\ReopenTodoHandler::class,
                         \Prooph\ProophessorDo\Model\Todo\Command\AddDeadlineToTodo::class => \Prooph\ProophessorDo\Model\Todo\Handler\AddDeadlineToTodoHandler::class,
                         \Prooph\ProophessorDo\Model\Todo\Command\AddReminderToTodo::class => \Prooph\ProophessorDo\Model\Todo\Handler\AddReminderToTodoHandler::class,
+                        \Prooph\ProophessorDo\Model\Todo\Command\RemindTodoAssignee::class => \Prooph\ProophessorDo\Model\Todo\Handler\RemindTodoAssigneeHandler::class,
                     ],
                 ],
             ],
@@ -82,6 +83,10 @@ return [
                         ],
                         \Prooph\ProophessorDo\Model\Todo\Event\ReminderWasAddedToTodo::class => [
                             \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
+                        ],
+                        \Prooph\ProophessorDo\Model\Todo\Event\TodoAssigneeWasReminded::class => [
+                            \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
+                            \Prooph\ProophessorDo\App\Mail\SendTodoReminderMailSubscriber::class,
                         ],
                     ],
                 ],
