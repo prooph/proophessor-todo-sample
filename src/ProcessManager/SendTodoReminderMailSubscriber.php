@@ -1,5 +1,5 @@
 <?php
-namespace Prooph\ProophessorDo\App\Mail;
+namespace Prooph\ProophessorDo\ProcessManager;
 
 use Prooph\ProophessorDo\Model\Todo\Event\TodoAssigneeWasReminded;
 use Prooph\ProophessorDo\Projection\Todo\TodoFinder;

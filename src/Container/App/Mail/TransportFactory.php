@@ -7,21 +7,19 @@ use Interop\Config\ProvidesDefaultOptions;
 use Interop\Config\RequiresConfig;
 use Interop\Config\RequiresMandatoryOptions;
 use Interop\Container\ContainerInterface;
-use Prooph\ProophessorDo\App\Mail\SendTodoReminderMailSubscriber;
-use Prooph\ProophessorDo\Projection\Todo\TodoFinder;
-use Prooph\ProophessorDo\Projection\User\UserFinder;
 use Zend\Mail\Transport\InMemory as InMemoryTransport;
 use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mail\Transport\SmtpOptions;
+use Zend\Mail\Transport\TransportInterface;
 
 
 /**
- * Class RemindTodoAssigneeHandlerFactory
+ * Class TransportFactory
  *
  * @package Prooph\ProophessorDo\Container\Model\Todo
- * @author Roman Sachse <r.sachse@ipark-media.de>
+ * @author Michał Żukowski <michal@durooil.com>
  */
-final class SendTodoReminderMailSubscriberFactory implements RequiresConfig, RequiresMandatoryOptions, ProvidesDefaultOptions
+final class TransportFactory implements RequiresConfig, RequiresMandatoryOptions, ProvidesDefaultOptions
 {
     use ConfigurationTrait;
 
@@ -51,21 +49,13 @@ final class SendTodoReminderMailSubscriberFactory implements RequiresConfig, Req
 
     /**
      * @param ContainerInterface $container
-     * @return SendTodoReminderMailSubscriber
+     * @return TransportInterface
      */
     public function __invoke(ContainerInterface $container)
     {
-        return new SendTodoReminderMailSubscriber(
-            $container->get(UserFinder::class),
-            $container->get(TodoFinder::class),
-            $this->getTransport($container->get('config'))
-        );
+        return $this->getTransport($container->get('config'));
     }
 
-    /**
-     * @param $config
-     * @return SmtpTransport
-     */
     private function getTransport($config)
     {
         $config = $this->optionsWithFallback($config);

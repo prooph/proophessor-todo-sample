@@ -20,6 +20,7 @@ return [
             Application::class => ApplicationFactory::class,
             Helper\UrlHelper::class => Helper\UrlHelperFactory::class,
             'doctrine.connection.default' => \Prooph\ProophessorDo\Container\Infrastructure\DoctrineDbalConnectionFactory::class,
+            \Zend\Mail\Transport\TransportInterface::class => \Prooph\ProophessorDo\Container\App\Mail\TransportFactory::class,
             // Action middleware
             \Prooph\ProophessorDo\App\Action\Home::class => \Prooph\ProophessorDo\Container\App\Action\HomeFactory::class,
             \Prooph\ProophessorDo\App\Action\UserList::class => \Prooph\ProophessorDo\Container\App\Action\UserListFactory::class,
@@ -45,7 +46,8 @@ return [
             \Prooph\ProophessorDo\Projection\Todo\TodoReminderFinder::class => \Prooph\ProophessorDo\Container\Projection\Todo\TodoReminderFinderFactory::class,
             \Prooph\ProophessorDo\Projection\Todo\TodoReminderProjector::class => \Prooph\ProophessorDo\Container\Projection\Todo\TodoReminderProjectorFactory::class,
             // Subscriber
-            \Prooph\ProophessorDo\App\Mail\SendTodoReminderMailSubscriber::class => \Prooph\ProophessorDo\Container\App\Mail\SendTodoReminderMailSubscriberFactory::class,
+            \Prooph\ProophessorDo\ProcessManager\SendTodoReminderMailSubscriber::class => \Prooph\ProophessorDo\Container\ProcessManager\SendTodoReminderMailSubscriberFactory::class,
+            \Prooph\ProophessorDo\ProcessManager\SendTodoDeadlineExpiredMailSubscriber::class => \Prooph\ProophessorDo\Container\ProcessManager\SendTodoDeadlineExpiredMailSubscriberFactory::class,
         ],
     ],
 ];

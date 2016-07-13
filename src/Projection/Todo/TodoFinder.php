@@ -20,7 +20,7 @@ use Doctrine\DBAL\Connection;
  * @package Prooph\ProophessorDo\Projection\Todo
  * @author Alexander Miertsch <kontakt@codeliner.ws>
  */
-final class TodoFinder
+class TodoFinder
 {
     /**
      * @var Connection

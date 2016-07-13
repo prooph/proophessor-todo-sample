@@ -19,7 +19,7 @@ use Doctrine\DBAL\Connection;
  * @package Prooph\ProophessorDo\Projection\User
  * @author Alexander Miertsch <kontakt@codeliner.ws>
  */
-final class UserFinder
+class UserFinder
 {
     /**
      * @var Connection
