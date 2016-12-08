@@ -1,11 +1,12 @@
 <?php
-/**
- * This file is part of prooph/proophessor-do.
+
+/*
+ * This file is part of prooph/proophessor.
  * (c) 2014-2016 prooph software GmbH <contact@prooph.de>
- * (c) 2015-2016 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
  */
 return [
     'prooph' => [
@@ -96,6 +97,49 @@ return [
                             \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
                             \Prooph\ProophessorDo\Projection\User\UserProjector::class,
                             \Prooph\ProophessorDo\ProcessManager\SendTodoDeadlineExpiredMailProcessManager::class,
+                        ],
+                        \Prooph\ProophessorDo\Model\Todo\Event\TodoWasUnmarkedAsExpired::class => [
+                            \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
+                            \Prooph\ProophessorDo\Projection\User\UserProjector::class,
+                        ],
+                    ],
+                ],
+            ],
+            'replay_bus' => [
+                'plugins' => [
+                    \Prooph\ServiceBus\Plugin\InvokeStrategy\OnEventStrategy::class
+                ],
+                'router' => [
+                    'routes' => [
+                        \Prooph\ProophessorDo\Model\User\Event\UserWasRegistered::class => [
+                            \Prooph\ProophessorDo\Projection\User\UserProjector::class,
+                        ],
+                        \Prooph\ProophessorDo\Model\Todo\Event\TodoWasPosted::class => [
+                            \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
+                            \Prooph\ProophessorDo\Projection\User\UserProjector::class,
+                        ],
+                        \Prooph\ProophessorDo\Model\Todo\Event\TodoWasMarkedAsDone::class => [
+                            \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
+                            \Prooph\ProophessorDo\Projection\User\UserProjector::class,
+                        ],
+                        \Prooph\ProophessorDo\Model\Todo\Event\TodoWasReopened::class => [
+                            \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
+                            \Prooph\ProophessorDo\Projection\User\UserProjector::class,
+                        ],
+                        \Prooph\ProophessorDo\Model\Todo\Event\DeadlineWasAddedToTodo::class => [
+                            \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
+                        ],
+                        \Prooph\ProophessorDo\Model\Todo\Event\ReminderWasAddedToTodo::class => [
+                            \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
+                            \Prooph\ProophessorDo\Projection\Todo\TodoReminderProjector::class,
+                        ],
+                        \Prooph\ProophessorDo\Model\Todo\Event\TodoAssigneeWasReminded::class => [
+                            \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
+                            \Prooph\ProophessorDo\Projection\Todo\TodoReminderProjector::class,
+                        ],
+                        \Prooph\ProophessorDo\Model\Todo\Event\TodoWasMarkedAsExpired::class => [
+                            \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,
+                            \Prooph\ProophessorDo\Projection\User\UserProjector::class,
                         ],
                         \Prooph\ProophessorDo\Model\Todo\Event\TodoWasUnmarkedAsExpired::class => [
                             \Prooph\ProophessorDo\Projection\Todo\TodoProjector::class,

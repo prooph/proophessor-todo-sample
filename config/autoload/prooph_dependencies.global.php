@@ -1,12 +1,14 @@
 <?php
-/**
- * This file is part of prooph/proophessor-do.
+
+/*
+ * This file is part of prooph/proophessor.
  * (c) 2014-2016 prooph software GmbH <contact@prooph.de>
- * (c) 2015-2016 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
  */
+
 /**
  * The services configuration is used to set up a Zend\ServiceManager
  * which is used as Inversion of Controller container in our application
@@ -43,6 +45,7 @@ return [
             \Prooph\ServiceBus\CommandBus::class => \Prooph\ServiceBus\Container\CommandBusFactory::class,
             \Prooph\ServiceBus\EventBus::class => \Prooph\ServiceBus\Container\EventBusFactory::class,
             \Prooph\ServiceBus\QueryBus::class => \Prooph\ServiceBus\Container\QueryBusFactory::class,
+            \Prooph\ProophessorDo\Container\Infrastructure\ReplayBus::class => \Prooph\ProophessorDo\Container\Infrastructure\ReplayBusFactory::class,
             //prooph/event-store-bus-bridge set up
             \Prooph\EventStoreBusBridge\TransactionManager::class => \Prooph\EventStoreBusBridge\Container\TransactionManagerFactory::class,
             \Prooph\EventStoreBusBridge\EventPublisher::class => \Prooph\EventStoreBusBridge\Container\EventPublisherFactory::class,

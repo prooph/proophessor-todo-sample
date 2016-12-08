@@ -1,30 +1,31 @@
 <?php
-/**
- * This file is part of prooph/proophessor-do.
- * (c) 2014-2016 prooph software GmbH <contact@prooph.de>
- * (c) 2015-2016 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+
+/*
+ * This file is part of prooph/proophessor.
+ * (c) 2014-2015 prooph software GmbH <contact@prooph.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * Date: 10/22/15 - 10:39 PM
  */
 
 /**
  * Replay all events to regenerate the read model
  *
- * @TODO Use a dedicated event bus to replay events as reminders and deadline notifications should not be sent to users again
  */
+
 namespace {
 
-    use Doctrine\DBAL\Connection;
     use Prooph\EventStore\EventStore;
     use Prooph\EventStore\Stream\StreamName;
     use Prooph\ProophessorDo\Projection\Table;
-    use Prooph\ServiceBus\EventBus;
+    use Prooph\ProophessorDo\Container\App\EventBus\ReplayBus;
     use Prooph\ServiceBus\Exception\MessageDispatchException;
     use Prooph\ServiceBus\MessageBus;
     use Symfony\Component\Stopwatch\Stopwatch;
 
-    chdir(dirname(__DIR__));
+chdir(dirname(__DIR__));
 
     // Setup autoloading
     require 'vendor/autoload.php';
@@ -37,14 +38,16 @@ namespace {
     //Make sure that the read model tables are empty
     $dbalConnection->exec('TRUNCATE TABLE ' . Table::USER);
     $dbalConnection->exec('TRUNCATE TABLE ' . Table::TODO);
+    $dbalConnection->exec('TRUNCATE TABLE ' . Table::TODO_REMINDER);
 
     /** @var $eventStore EventStore */
     $eventStore = $container->get(EventStore::class);
 
-    /** @var $eventBus EventBus */
-    $eventBus = $container->get(EventBus::class);
+    /** @var $replayBus ReplayBus */
+    $replayBus = $container->build(ReplayBus::class);
 
-    $retry = function (array $failedEvents, $retryCount, \Exception $lastException, callable $retryCb) use ($eventBus) {
+
+    $retry = function (array $failedEvents, $retryCount, \Exception $lastException, callable $retryCb) use ($replayBus) {
         if ($retryCount > 3) {
             echo "\033[1;31mAborting retry... Something unexpected happen.\033[0m\n\n";
             if ($lastException instanceof MessageDispatchException) {
@@ -55,7 +58,7 @@ namespace {
         $newFailedEvents = [];
         foreach ($failedEvents as $failedEvent) {
             try {
-                $eventBus->dispatch($failedEvent);
+                $replayBus->dispatch($failedEvent);
             } catch (\Exception $ex) {
                 $newFailedEvents[] = $failedEvent;
             }
@@ -76,7 +79,7 @@ namespace {
     $failedEvents = [];
     foreach ($replayStream as $recordedEvent) {
         try {
-            $eventBus->dispatch($recordedEvent);
+            $replayBus->dispatch($recordedEvent);
         } catch (\Exception $ex) {
             $failedEvents[] = $recordedEvent;
         }
