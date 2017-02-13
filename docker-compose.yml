@@ -19,7 +19,7 @@ php:
     - dataphp
 
 dataphp:
-  image: debian:jessie
+  image: busybox
   volumes:
     - .:/var/www
 
