@@ -33,12 +33,37 @@ class TodoDeadlineTest extends TestCase
         }
     }
 
+    /**
+     * @test
+     * @dataProvider getDeadlines
+    */
+    public function it_correctly_validates_the_deadline_is_met($deadline, $inThePast): void
+    {
+        $deadline = TodoDeadline::fromString($deadline);
+        $isMet = $deadline->isMet();
+
+        if ($inThePast) {
+            $this->assertFalse($isMet, 'Deadline is not met');
+        } else {
+            $this->assertTrue($isMet, 'Deadline is met');
+        }
+    }
+
+
     public function getDeadlines(): array
     {
         return [
             [
-                '2047-02-01 10:00:00',
+                '2049-12-15T17:19:27+01:00',
                 false,
+            ],
+            [
+                '2037-01-01 10:00:00',
+                false,
+            ],
+            [
+                '2017-12-15T17:19:27+01:00',
+                true,
             ],
             [
                 '1947-01-01 10:00:00',
