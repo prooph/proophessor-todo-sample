@@ -36,7 +36,7 @@ class TodoDeadlineTest extends TestCase
     /**
      * @test
      * @dataProvider getDeadlines
-    */
+     */
     public function it_correctly_validates_the_deadline_is_met($deadline, $inThePast): void
     {
         $deadline = TodoDeadline::fromString($deadline);
@@ -51,7 +51,7 @@ class TodoDeadlineTest extends TestCase
 
     /**
      * @test
-    */
+     */
     public function it_stores_deadline_in_utc(): void
     {
         $deadline = TodoDeadline::fromString('2039-12-15T17:19:27+08:00');
