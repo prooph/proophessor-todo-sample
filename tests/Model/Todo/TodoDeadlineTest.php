@@ -49,12 +49,21 @@ class TodoDeadlineTest extends TestCase
         }
     }
 
+    /**
+     * @test
+    */
+    public function it_stores_deadline_in_utc(): void
+    {
+        $deadline = TodoDeadline::fromString('2039-12-15T17:19:27+08:00');
+
+        $this->assertEquals('2039-12-15T09:19:27+00:00', $deadline->toString());
+    }
 
     public function getDeadlines(): array
     {
         return [
             [
-                '2049-12-15T17:19:27+01:00',
+                '2039-12-15T17:19:27+01:00',
                 false,
             ],
             [
@@ -62,7 +71,7 @@ class TodoDeadlineTest extends TestCase
                 false,
             ],
             [
-                '2017-12-15T17:19:27+01:00',
+                '2017-12-15T17:19:27+05:00',
                 true,
             ],
             [

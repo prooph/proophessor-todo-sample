@@ -33,8 +33,11 @@ final class TodoDeadline implements ValueObject
 
     private function __construct(string $deadline)
     {
-        $this->deadline = new \DateTimeImmutable($deadline);
-        $this->createdOn = new \DateTimeImmutable('now', $this->deadline->getTimezone());
+        $deadlineInUtc = (new \DateTime($deadline))
+            ->setTimezone(new \DateTimeZone('UTC'));
+
+        $this->deadline = \DateTimeImmutable::createFromMutable($deadlineInUtc);
+        $this->createdOn = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
     }
 
     public function isInThePast(): bool
@@ -54,7 +57,7 @@ final class TodoDeadline implements ValueObject
 
     public function isMet(): bool
     {
-        return $this->deadline > new \DateTimeImmutable('now', $this->deadline->getTimezone());
+        return $this->deadline > new \DateTimeImmutable();
     }
 
     public function sameValueAs(ValueObject $object): bool
