@@ -13,6 +13,9 @@ declare(strict_types=1);
 namespace Prooph\ProophessorDo\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface;
+use Prooph\Psr7Middleware\Exception\RuntimeException;
+use Prooph\ServiceBus\Exception\CommandDispatchException;
+use Prooph\ServiceBus\Exception\MessageDispatchException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Webimpress\HttpMiddlewareCompatibility\HandlerInterface;
@@ -32,6 +35,14 @@ final class JsonError implements MiddlewareInterface
             return $handler->{HANDLER_METHOD}($request);
         } catch (\Throwable $e) {
             $contentType = trim($request->getHeaderLine('Content-Type'));
+
+            if($e instanceof RuntimeException) {
+                $e = $e->getPrevious();
+
+                if($e instanceof CommandDispatchException) {
+                    $e = $e->getPrevious();
+                }
+            }
 
             if (0 === mb_strpos($contentType, 'application/json')) {
                 $data = 'development' === getenv('PROOPH_ENV')

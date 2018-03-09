@@ -43,14 +43,14 @@ $projection
                 'id' => $event->todoId()->toString(),
                 'assignee_id' => $event->assigneeId()->toString(),
                 'text' => $event->text()->toString(),
-                'status' => $event->todoStatus()->toString(),
+                'status' => mb_strtolower($event->todoStatus()->toString()),
             ]);
         },
         TodoWasMarkedAsDone::class => function ($state, TodoWasMarkedAsDone $event) {
             $this->readModel()->stack(
                 'update',
                 [
-                    'status' => $event->newStatus()->toString(),
+                    'status' => mb_strtolower($event->newStatus()->toString()),
                 ],
                 [
                     'id' => $event->todoId()->toString(),
@@ -61,7 +61,7 @@ $projection
             $this->readModel()->stack(
                 'update',
                 [
-                    'status' => $event->status()->toString(),
+                    'status' => mb_strtolower($event->status()->toString()),
                 ],
                 [
                     'id' => $event->todoId()->toString(),
@@ -94,7 +94,7 @@ $projection
             $this->readModel()->stack(
                 'update',
                 [
-                    'status' => $event->newStatus()->toString(),
+                    'status' => mb_strtolower($event->newStatus()->toString()),
                 ],
                 [
                     'id' => $event->todoId()->toString(),
@@ -105,7 +105,7 @@ $projection
             $this->readModel()->stack(
                 'update',
                 [
-                    'status' => $event->newStatus()->toString(),
+                    'status' => mb_strtolower($event->newStatus()->toString()),
                 ],
                 [
                     'id' => $event->todoId()->toString(),
