@@ -1,8 +1,8 @@
 <?php
 /**
  * This file is part of prooph/proophessor-do.
- * (c) 2014-2017 prooph software GmbH <contact@prooph.de>
- * (c) 2015-2017 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * (c) 2014-2018 prooph software GmbH <contact@prooph.de>
+ * (c) 2015-2018 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -43,14 +43,14 @@ $projection
                 'id' => $event->todoId()->toString(),
                 'assignee_id' => $event->assigneeId()->toString(),
                 'text' => $event->text()->toString(),
-                'status' => $event->todoStatus()->toString(),
+                'status' => mb_strtolower($event->todoStatus()->toString()),
             ]);
         },
         TodoWasMarkedAsDone::class => function ($state, TodoWasMarkedAsDone $event) {
             $this->readModel()->stack(
                 'update',
                 [
-                    'status' => $event->newStatus()->toString(),
+                    'status' => mb_strtolower($event->newStatus()->toString()),
                 ],
                 [
                     'id' => $event->todoId()->toString(),
@@ -61,7 +61,7 @@ $projection
             $this->readModel()->stack(
                 'update',
                 [
-                    'status' => $event->status()->toString(),
+                    'status' => mb_strtolower($event->status()->toString()),
                 ],
                 [
                     'id' => $event->todoId()->toString(),
@@ -94,7 +94,7 @@ $projection
             $this->readModel()->stack(
                 'update',
                 [
-                    'status' => $event->newStatus()->toString(),
+                    'status' => mb_strtolower($event->newStatus()->toString()),
                 ],
                 [
                     'id' => $event->todoId()->toString(),
@@ -105,7 +105,7 @@ $projection
             $this->readModel()->stack(
                 'update',
                 [
-                    'status' => $event->newStatus()->toString(),
+                    'status' => mb_strtolower($event->newStatus()->toString()),
                 ],
                 [
                     'id' => $event->todoId()->toString(),
