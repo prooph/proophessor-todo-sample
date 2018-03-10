@@ -15,7 +15,6 @@ namespace Prooph\ProophessorDo\Middleware;
 use Fig\Http\Message\StatusCodeInterface;
 use Prooph\Psr7Middleware\Exception\RuntimeException;
 use Prooph\ServiceBus\Exception\CommandDispatchException;
-use Prooph\ServiceBus\Exception\MessageDispatchException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Webimpress\HttpMiddlewareCompatibility\HandlerInterface;
@@ -36,10 +35,10 @@ final class JsonError implements MiddlewareInterface
         } catch (\Throwable $e) {
             $contentType = trim($request->getHeaderLine('Content-Type'));
 
-            if($e instanceof RuntimeException) {
+            if ($e instanceof RuntimeException) {
                 $e = $e->getPrevious();
 
-                if($e instanceof CommandDispatchException) {
+                if ($e instanceof CommandDispatchException) {
                     $e = $e->getPrevious();
                 }
             }
